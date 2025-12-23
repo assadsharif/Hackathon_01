@@ -30,10 +30,10 @@
 
 **Purpose**: Initialize Docusaurus project and basic structure
 
-- [ ] T001 Initialize Docusaurus project with classic template in physical-ai-book/ directory
-- [ ] T002 Configure package.json with project metadata (name: physical-ai-book, version: 1.0.0)
-- [ ] T003 [P] Remove default Docusaurus blog folder (physical-ai-book/blog/)
-- [ ] T004 [P] Remove default docs content (physical-ai-book/docs/intro.md, tutorial-basics/, tutorial-extras/)
+- [X] T001 Initialize Docusaurus project with classic template in physical-ai-book/ directory
+- [X] T002 Configure package.json with project metadata (name: physical-ai-book, version: 1.0.0)
+- [X] T003 [P] Remove default Docusaurus blog folder (physical-ai-book/blog/)
+- [X] T004 [P] Remove default docs content (physical-ai-book/docs/intro.md, tutorial-basics/, tutorial-extras/)
 
 **Checkpoint**: Empty Docusaurus project ready for configuration
 
