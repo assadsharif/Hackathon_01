@@ -34,6 +34,7 @@ get_current_branch() {
         local latest_feature=""
         local highest=0
 
+        # Search directly in specs/
         for dir in "$specs_dir"/*; do
             if [[ -d "$dir" ]]; then
                 local dirname=$(basename "$dir")
@@ -45,6 +46,25 @@ get_current_branch() {
                         latest_feature=$dirname
                     fi
                 fi
+            fi
+        done
+
+        # Also search in Phase subdirectories
+        for phase_dir in "$specs_dir"/Phase*/; do
+            if [[ -d "$phase_dir" ]]; then
+                for dir in "$phase_dir"/*; do
+                    if [[ -d "$dir" ]]; then
+                        local dirname=$(basename "$dir")
+                        if [[ "$dirname" =~ ^([0-9]{3})- ]]; then
+                            local number=${BASH_REMATCH[1]}
+                            number=$((10#$number))
+                            if [[ "$number" -gt "$highest" ]]; then
+                                highest=$number
+                                latest_feature=$dirname
+                            fi
+                        fi
+                    fi
+                done
             fi
         done
 
@@ -85,6 +105,7 @@ get_feature_dir() { echo "$1/specs/$2"; }
 
 # Find feature directory by numeric prefix instead of exact branch match
 # This allows multiple branches to work on the same spec (e.g., 004-fix-bug, 004-add-feature)
+# Also searches in Phase subdirectories (e.g., specs/Phase I/001-feature-name)
 find_feature_dir_by_prefix() {
     local repo_root="$1"
     local branch_name="$2"
@@ -102,9 +123,21 @@ find_feature_dir_by_prefix() {
     # Search for directories in specs/ that start with this prefix
     local matches=()
     if [[ -d "$specs_dir" ]]; then
+        # First, search directly in specs/
         for dir in "$specs_dir"/"$prefix"-*; do
             if [[ -d "$dir" ]]; then
-                matches+=("$(basename "$dir")")
+                matches+=("$dir")
+            fi
+        done
+
+        # Also search in Phase subdirectories (e.g., specs/Phase I/, specs/Phase II/)
+        for phase_dir in "$specs_dir"/Phase*/; do
+            if [[ -d "$phase_dir" ]]; then
+                for dir in "$phase_dir"/"$prefix"-*; do
+                    if [[ -d "$dir" ]]; then
+                        matches+=("$dir")
+                    fi
+                done
             fi
         done
     fi
@@ -115,7 +148,7 @@ find_feature_dir_by_prefix() {
         echo "$specs_dir/$branch_name"
     elif [[ ${#matches[@]} -eq 1 ]]; then
         # Exactly one match - perfect!
-        echo "$specs_dir/${matches[0]}"
+        echo "${matches[0]}"
     else
         # Multiple matches - this shouldn't happen with proper naming convention
         echo "ERROR: Multiple spec directories found with prefix '$prefix': ${matches[*]}" >&2
