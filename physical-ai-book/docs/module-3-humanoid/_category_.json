@@ -1,0 +1,8 @@
+{
+  "label": "Module 3: Humanoid Robotics Overview",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Survey major humanoid platforms, understand bipedal locomotion challenges, and explore human-robot morphological design."
+  }
+}

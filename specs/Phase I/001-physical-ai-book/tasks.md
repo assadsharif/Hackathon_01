@@ -80,68 +80,68 @@
 
 ### Curriculum Overview (Homepage)
 
-- [ ] T013 [US1] Create curriculum-overview.md at physical-ai-book/docs/curriculum-overview.md with frontmatter (sidebar_position: 0, slug: /)
-- [ ] T014 [US1] Write curriculum-overview.md introduction section (book purpose, what you'll learn)
-- [ ] T015 [US1] Write curriculum-overview.md target audience section (AI students, robotics engineers, ML developers)
-- [ ] T016 [US1] Write curriculum-overview.md prerequisites section (Python, ML basics, robotics familiarity)
-- [ ] T017 [US1] Write curriculum-overview.md module progression section (7 modules listed with brief descriptions)
-- [ ] T018 [US1] Write curriculum-overview.md "How to Use This Book" section
+- [X] T013 [US1] Create curriculum-overview.md at physical-ai-book/docs/curriculum-overview.md with frontmatter (sidebar_position: 0, slug: /)
+- [X] T014 [US1] Write curriculum-overview.md introduction section (book purpose, what you'll learn)
+- [X] T015 [US1] Write curriculum-overview.md target audience section (AI students, robotics engineers, ML developers)
+- [X] T016 [US1] Write curriculum-overview.md prerequisites section (Python, ML basics, robotics familiarity)
+- [X] T017 [US1] Write curriculum-overview.md module progression section (7 modules listed with brief descriptions)
+- [X] T018 [US1] Write curriculum-overview.md "How to Use This Book" section
 
 ### Module 1: Introduction to Physical AI
 
-- [ ] T019 [P] [US1] Create _category_.json at physical-ai-book/docs/module-1-intro/_category_.json (position: 1, label: "Module 1: Introduction to Physical AI")
-- [ ] T020 [US1] [US2] Create index.md at physical-ai-book/docs/module-1-intro/index.md with overview and learning outcomes
-- [ ] T021 [P] [US1] Create placeholder what-is-physical-ai.md at physical-ai-book/docs/module-1-intro/what-is-physical-ai.md
-- [ ] T022 [P] [US1] Create placeholder embodiment-significance.md at physical-ai-book/docs/module-1-intro/embodiment-significance.md
-- [ ] T023 [P] [US1] Create placeholder application-domains.md at physical-ai-book/docs/module-1-intro/application-domains.md
+- [X] T019 [P] [US1] Create _category_.json at physical-ai-book/docs/module-1-intro/_category_.json (position: 1, label: "Module 1: Introduction to Physical AI")
+- [X] T020 [US1] [US2] Create index.md at physical-ai-book/docs/module-1-intro/index.md with overview and learning outcomes
+- [X] T021 [P] [US1] Create placeholder what-is-physical-ai.md at physical-ai-book/docs/module-1-intro/what-is-physical-ai.md
+- [X] T022 [P] [US1] Create placeholder embodiment-significance.md at physical-ai-book/docs/module-1-intro/embodiment-significance.md
+- [X] T023 [P] [US1] Create placeholder application-domains.md at physical-ai-book/docs/module-1-intro/application-domains.md
 
 ### Module 2: Foundations of Embodied Intelligence
 
-- [ ] T024 [P] [US1] Create _category_.json at physical-ai-book/docs/module-2-embodied/_category_.json (position: 2)
-- [ ] T025 [US1] [US2] Create index.md at physical-ai-book/docs/module-2-embodied/index.md with overview and learning outcomes
-- [ ] T026 [P] [US1] Create placeholder embodied-cognition.md at physical-ai-book/docs/module-2-embodied/embodied-cognition.md
-- [ ] T027 [P] [US1] Create placeholder sensorimotor-integration.md at physical-ai-book/docs/module-2-embodied/sensorimotor-integration.md
-- [ ] T028 [P] [US1] Create placeholder physical-interaction-learning.md at physical-ai-book/docs/module-2-embodied/physical-interaction-learning.md
+- [X] T024 [P] [US1] Create _category_.json at physical-ai-book/docs/module-2-embodied/_category_.json (position: 2)
+- [X] T025 [US1] [US2] Create index.md at physical-ai-book/docs/module-2-embodied/index.md with overview and learning outcomes
+- [X] T026 [P] [US1] Create placeholder embodied-cognition.md at physical-ai-book/docs/module-2-embodied/embodied-cognition.md
+- [X] T027 [P] [US1] Create placeholder sensorimotor-integration.md at physical-ai-book/docs/module-2-embodied/sensorimotor-integration.md
+- [X] T028 [P] [US1] Create placeholder physical-interaction-learning.md at physical-ai-book/docs/module-2-embodied/physical-interaction-learning.md
 
 ### Module 3: Humanoid Robotics Overview
 
-- [ ] T029 [P] [US1] Create _category_.json at physical-ai-book/docs/module-3-humanoid/_category_.json (position: 3)
-- [ ] T030 [US1] [US2] Create index.md at physical-ai-book/docs/module-3-humanoid/index.md with overview and learning outcomes
-- [ ] T031 [P] [US1] Create placeholder major-platforms.md at physical-ai-book/docs/module-3-humanoid/major-platforms.md
-- [ ] T032 [P] [US1] Create placeholder bipedal-locomotion.md at physical-ai-book/docs/module-3-humanoid/bipedal-locomotion.md
-- [ ] T033 [P] [US1] Create placeholder human-robot-morphology.md at physical-ai-book/docs/module-3-humanoid/human-robot-morphology.md
+- [X] T029 [P] [US1] Create _category_.json at physical-ai-book/docs/module-3-humanoid/_category_.json (position: 3)
+- [X] T030 [US1] [US2] Create index.md at physical-ai-book/docs/module-3-humanoid/index.md with overview and learning outcomes
+- [X] T031 [P] [US1] Create placeholder major-platforms.md at physical-ai-book/docs/module-3-humanoid/major-platforms.md
+- [X] T032 [P] [US1] Create placeholder bipedal-locomotion.md at physical-ai-book/docs/module-3-humanoid/bipedal-locomotion.md
+- [X] T033 [P] [US1] Create placeholder human-robot-morphology.md at physical-ai-book/docs/module-3-humanoid/human-robot-morphology.md
 
 ### Module 4: Perception for Physical AI
 
-- [ ] T034 [P] [US1] Create _category_.json at physical-ai-book/docs/module-4-perception/_category_.json (position: 4)
-- [ ] T035 [US1] [US2] Create index.md at physical-ai-book/docs/module-4-perception/index.md with overview and learning outcomes
-- [ ] T036 [P] [US1] Create placeholder multimodal-sensing.md at physical-ai-book/docs/module-4-perception/multimodal-sensing.md
-- [ ] T037 [P] [US1] Create placeholder spatial-awareness.md at physical-ai-book/docs/module-4-perception/spatial-awareness.md
-- [ ] T038 [P] [US1] Create placeholder object-recognition.md at physical-ai-book/docs/module-4-perception/object-recognition.md
+- [X] T034 [P] [US1] Create _category_.json at physical-ai-book/docs/module-4-perception/_category_.json (position: 4)
+- [X] T035 [US1] [US2] Create index.md at physical-ai-book/docs/module-4-perception/index.md with overview and learning outcomes
+- [X] T036 [P] [US1] Create placeholder multimodal-sensing.md at physical-ai-book/docs/module-4-perception/multimodal-sensing.md
+- [X] T037 [P] [US1] Create placeholder spatial-awareness.md at physical-ai-book/docs/module-4-perception/spatial-awareness.md
+- [X] T038 [P] [US1] Create placeholder object-recognition.md at physical-ai-book/docs/module-4-perception/object-recognition.md
 
 ### Module 5: Action and Control Fundamentals
 
-- [ ] T039 [P] [US1] Create _category_.json at physical-ai-book/docs/module-5-control/_category_.json (position: 5)
-- [ ] T040 [US1] [US2] Create index.md at physical-ai-book/docs/module-5-control/index.md with overview and learning outcomes
-- [ ] T041 [P] [US1] Create placeholder motion-planning.md at physical-ai-book/docs/module-5-control/motion-planning.md
-- [ ] T042 [P] [US1] Create placeholder control-hierarchies.md at physical-ai-book/docs/module-5-control/control-hierarchies.md
-- [ ] T043 [P] [US1] Create placeholder action-perception-loop.md at physical-ai-book/docs/module-5-control/action-perception-loop.md
+- [X] T039 [P] [US1] Create _category_.json at physical-ai-book/docs/module-5-control/_category_.json (position: 5)
+- [X] T040 [US1] [US2] Create index.md at physical-ai-book/docs/module-5-control/index.md with overview and learning outcomes
+- [X] T041 [P] [US1] Create placeholder motion-planning.md at physical-ai-book/docs/module-5-control/motion-planning.md
+- [X] T042 [P] [US1] Create placeholder control-hierarchies.md at physical-ai-book/docs/module-5-control/control-hierarchies.md
+- [X] T043 [P] [US1] Create placeholder action-perception-loop.md at physical-ai-book/docs/module-5-control/action-perception-loop.md
 
 ### Module 6: Learning in Physical Environments
 
-- [ ] T044 [P] [US1] Create _category_.json at physical-ai-book/docs/module-6-learning/_category_.json (position: 6)
-- [ ] T045 [US1] [US2] Create index.md at physical-ai-book/docs/module-6-learning/index.md with overview and learning outcomes
-- [ ] T046 [P] [US1] Create placeholder simulation-vs-reality.md at physical-ai-book/docs/module-6-learning/simulation-vs-reality.md
-- [ ] T047 [P] [US1] Create placeholder transfer-learning.md at physical-ai-book/docs/module-6-learning/transfer-learning.md
-- [ ] T048 [P] [US1] Create placeholder reinforcement-learning.md at physical-ai-book/docs/module-6-learning/reinforcement-learning.md
+- [X] T044 [P] [US1] Create _category_.json at physical-ai-book/docs/module-6-learning/_category_.json (position: 6)
+- [X] T045 [US1] [US2] Create index.md at physical-ai-book/docs/module-6-learning/index.md with overview and learning outcomes
+- [X] T046 [P] [US1] Create placeholder simulation-vs-reality.md at physical-ai-book/docs/module-6-learning/simulation-vs-reality.md
+- [X] T047 [P] [US1] Create placeholder transfer-learning.md at physical-ai-book/docs/module-6-learning/transfer-learning.md
+- [X] T048 [P] [US1] Create placeholder reinforcement-learning.md at physical-ai-book/docs/module-6-learning/reinforcement-learning.md
 
 ### Module 7: Future Directions and Applications
 
-- [ ] T049 [P] [US1] Create _category_.json at physical-ai-book/docs/module-7-future/_category_.json (position: 7)
-- [ ] T050 [US1] [US2] Create index.md at physical-ai-book/docs/module-7-future/index.md with overview and learning outcomes
-- [ ] T051 [P] [US1] Create placeholder emerging-trends.md at physical-ai-book/docs/module-7-future/emerging-trends.md
-- [ ] T052 [P] [US1] Create placeholder ethical-considerations.md at physical-ai-book/docs/module-7-future/ethical-considerations.md
-- [ ] T053 [P] [US1] Create placeholder industry-applications.md at physical-ai-book/docs/module-7-future/industry-applications.md
+- [X] T049 [P] [US1] Create _category_.json at physical-ai-book/docs/module-7-future/_category_.json (position: 7)
+- [X] T050 [US1] [US2] Create index.md at physical-ai-book/docs/module-7-future/index.md with overview and learning outcomes
+- [X] T051 [P] [US1] Create placeholder emerging-trends.md at physical-ai-book/docs/module-7-future/emerging-trends.md
+- [X] T052 [P] [US1] Create placeholder ethical-considerations.md at physical-ai-book/docs/module-7-future/ethical-considerations.md
+- [X] T053 [P] [US1] Create placeholder industry-applications.md at physical-ai-book/docs/module-7-future/industry-applications.md
 
 **Checkpoint**: All 7 modules visible in sidebar, each with learning outcomes. US1 and US2 independently testable.
 
