@@ -1,0 +1,8 @@
+{
+  "label": "Module 5: Action and Control Fundamentals",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Explore how robots plan and execute physical actions through motion planning and hierarchical control."
+  }
+}
