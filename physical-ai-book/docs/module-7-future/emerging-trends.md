@@ -57,8 +57,6 @@ Physical AI and humanoid robotics stand at an inflection point—advances in fou
 
 **Example**: **CLIPort** (Columbia, 2021) - CLIP for pick-and-place with language
 
-goals
-
 **Benefit**: Generalize to novel objects without task-specific training
 
 ---
@@ -90,7 +88,7 @@ goals
 
 ### Open Challenges
 
-**1. Data Scarcity**: Robot demos (130K) << internet text/images (trillions)
+**1. Data Scarcity**: Robot demos (130K) &lt;&lt; internet text/images (trillions)
 
 **Solution**: Large-scale data collection (Open-X), simulation
 

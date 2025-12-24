@@ -38,7 +38,7 @@ As Physical AI and humanoid robots transition from research labs to homes, workp
 ### Safety Requirements
 
 **ISO 10218** (Robot Safety Standard):
-- Collaborative robots must limit force (<150N contact force)
+- Collaborative robots must limit force (&lt;150N contact force)
 - Emergency stop accessible within 0.5 seconds
 - Collision detection (stop within 50ms of unexpected contact)
 
