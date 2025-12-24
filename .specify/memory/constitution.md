@@ -2,20 +2,14 @@
 
 <!--
 ## Sync Impact Report
-- Version change: 0.0.0 (template) → 1.0.0
-- Added principles:
-  - I. Documentation-First
-  - II. Content Structure
-  - III. Build Verification
-  - IV. Accessibility
-  - V. Simplicity
+- Version change: 1.0.0 → 1.1.0
+- Amendment: Added MCP development scope clarification
 - Added sections:
-  - Phase 1 Constraints
-  - Quality Standards
-- Templates requiring updates:
-  - ✅ plan-template.md - Constitution Check section compatible
-  - ✅ spec-template.md - Requirements structure compatible
-  - ✅ tasks-template.md - Phase structure compatible
+  - VI. MCP Server Development (Phase 2+)
+- Structural changes:
+  - Added mcp-servers/ directory for MCP server projects
+  - Added .claude/skills/mcp-developer/ skill for MCP development guidance
+- Templates requiring updates: None
 - Follow-up TODOs: None
 -->
 
@@ -76,6 +70,18 @@ Use Docusaurus defaults and avoid premature customization. Complexity MUST be ju
 - NO external services (analytics, comments) in Phase 1
 - Configuration changes MUST be documented with rationale
 
+### VI. MCP Server Development (Phase 2+)
+
+MCP (Model Context Protocol) servers MAY be developed to enhance the project with specialized tooling. MCP development is IN SCOPE for Phase 2+ but subject to documentation-first principles.
+
+**Rules:**
+- MCP servers MUST be developed using spec-driven methodology (spec → plan → implement)
+- All MCP server projects MUST reside in `mcp-servers/` directory
+- MCP servers MUST follow the mcp-developer skill guidance (`.claude/skills/mcp-developer/`)
+- MCP servers SHOULD provide capabilities related to Physical AI research, documentation, or robotics workflows
+- Phase 1: MCP development is OUT OF SCOPE (focus on book content only)
+- Phase 2+: MCP development is IN SCOPE for project-relevant tooling
+
 ## Phase 1 Constraints
 
 The following are explicitly OUT OF SCOPE for Phase 1 and MUST NOT be implemented:
@@ -103,17 +109,31 @@ The following are explicitly OUT OF SCOPE for Phase 1 and MUST NOT be implemente
 ### File Organization
 
 ```
-physical-ai-book/
-├── docs/                    # All content here
-│   ├── curriculum-overview.md  # Homepage (slug: /)
-│   └── module-N-name/       # One folder per module
-│       ├── _category_.json  # Sidebar configuration
-│       ├── index.md         # Module overview + outcomes
-│       └── *.md             # Chapter files
-├── static/                  # Assets
-│   ├── img/module-N/        # Module-specific images
-│   └── diagrams/            # Shared diagrams
-└── src/css/custom.css       # Minimal styling only
+Hackathon_01/
+├── .claude/                 # Claude Code configuration
+│   ├── skills/              # Skills for development guidance
+│   │   ├── docusaurus-book/
+│   │   ├── github-manager/
+│   │   ├── mcp-developer/   # MCP server development guide
+│   │   └── physical-ai-content/
+│   └── agents/              # Autonomous agents
+│       └── github-workflow/
+├── physical-ai-book/        # Docusaurus site
+│   ├── docs/                # All content here
+│   │   ├── curriculum-overview.md  # Homepage (slug: /)
+│   │   └── module-N-name/   # One folder per module
+│   │       ├── _category_.json  # Sidebar configuration
+│   │       ├── index.md     # Module overview + outcomes
+│   │       └── *.md         # Chapter files
+│   ├── static/              # Assets
+│   │   ├── img/module-N/    # Module-specific images
+│   │   └── diagrams/        # Shared diagrams
+│   └── src/css/custom.css   # Minimal styling only
+├── mcp-servers/             # MCP server projects (Phase 2+)
+│   └── README.md            # MCP development workspace
+└── specs/                   # Feature specifications
+    └── Phase I/
+        └── 001-physical-ai-book/
 ```
 
 ## Governance
@@ -131,4 +151,20 @@ This constitution governs all development decisions for the Physical AI Book pro
 - Constitution violations MUST be justified in writing or resolved
 - Phase 1 constraints are NON-NEGOTIABLE until Phase 2 begins
 
-**Version**: 1.0.0 | **Ratified**: 2025-12-23 | **Last Amended**: 2025-12-23
+**Version**: 1.1.0 | **Ratified**: 2025-12-23 | **Last Amended**: 2025-12-24
+
+---
+
+## Amendment History
+
+### v1.1.0 (2025-12-24)
+- **Added**: Principle VI - MCP Server Development (Phase 2+)
+- **Added**: mcp-servers/ directory for MCP server projects
+- **Added**: .claude/skills/mcp-developer/ skill for development guidance
+- **Rationale**: MCP servers will enhance project with specialized tooling for Physical AI research and documentation workflows
+- **Scope**: MCP development in scope for Phase 2+, out of scope for Phase 1
+
+### v1.0.0 (2025-12-23)
+- Initial constitution with 5 core principles
+- Phase 1 constraints defined
+- Quality standards established
