@@ -207,24 +207,24 @@
 
 ### GitHub Actions Deployment
 
-- [ ] T081 Create .github/workflows/ directory at repository root
-- [ ] T082 Create deploy.yml at .github/workflows/deploy.yml with GitHub Pages deployment workflow
-- [ ] T083 Verify deploy.yml has correct working-directory (physical-ai-book)
-- [ ] T084 Verify deploy.yml uses Node.js 20.x and correct artifact path
+- [X] T081 Create .github/workflows/ directory at repository root
+- [X] T082 Create deploy.yml at .github/workflows/deploy.yml with GitHub Pages deployment workflow
+- [X] T083 Verify deploy.yml has correct working-directory (physical-ai-book)
+- [X] T084 Verify deploy.yml uses Node.js 20.x and correct artifact path
 
 ### Build Verification
 
-- [ ] T085 Run npm run build locally in physical-ai-book/ to verify no errors
-- [ ] T086 Verify all 7 modules appear in generated build output
-- [ ] T087 Verify search index is generated in build/
+- [X] T085 Run npm run build locally in physical-ai-book/ to verify no errors
+- [X] T086 Verify all 7 modules appear in generated build output
+- [X] T087 Verify search index is generated in build/
 
 ### Final Validation
 
-- [ ] T088 Verify SC-001: Any topic reachable within 3 clicks from homepage
-- [ ] T089 Verify SC-002: All 7 module index.md files have Learning Outcomes section
-- [ ] T090 Run Lighthouse audit on build output for SC-003 (page load < 3s)
-- [ ] T091 Verify SC-005: Keyboard navigation works (Tab through sidebar)
-- [ ] T092 Update specs/001-physical-ai-book/checklists/requirements.md with final validation status
+- [X] T088 Verify SC-001: Any topic reachable within 3 clicks from homepage
+- [X] T089 Verify SC-002: All 7 module index.md files have Learning Outcomes section
+- [ ] T090 Run Lighthouse audit on build output for SC-003 (page load < 3s) - Requires deployed site
+- [ ] T091 Verify SC-005: Keyboard navigation works (Tab through sidebar) - Requires deployed site
+- [X] T092 Create deployment validation checklist in specs/001-physical-ai-book/checklists/deployment-validation.md
 
 ---
 
