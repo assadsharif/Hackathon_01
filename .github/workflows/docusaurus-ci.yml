@@ -180,6 +180,7 @@ jobs:
 
     steps:
       - name: Check build status
+        working-directory: .
         run: |
           echo "## Docusaurus Frontend CI Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
