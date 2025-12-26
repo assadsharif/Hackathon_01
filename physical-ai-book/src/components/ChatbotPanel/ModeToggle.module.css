@@ -1,0 +1,93 @@
+.container {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  background: var(--ifm-background-surface-color);
+}
+
+/* Toggle Group */
+.toggleGroup {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.toggleButton {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  border: 2px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-color-emphasis-800);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toggleButton:hover:not(.disabled) {
+  border-color: var(--ifm-color-primary);
+  background: var(--ifm-color-primary-lightest);
+}
+
+.toggleButton.active {
+  border-color: var(--ifm-color-primary);
+  background: var(--ifm-color-primary);
+  color: white;
+}
+
+.toggleButton.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+.label {
+  font-family: var(--ifm-font-family-base);
+}
+
+.badge {
+  padding: 0.125rem 0.375rem;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  font-size: 0.625rem;
+  font-weight: 600;
+}
+
+/* Mode Description */
+.description {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--ifm-color-emphasis-100);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: var(--ifm-color-emphasis-800);
+}
+
+.descriptionIcon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.descriptionText {
+  line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .label {
+    display: none;
+  }
+
+  .toggleButton {
+    padding: 0.625rem 0.5rem;
+  }
+}

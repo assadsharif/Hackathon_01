@@ -1,0 +1,184 @@
+.container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Custom Scrollbar */
+.container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.container::-webkit-scrollbar-track {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: var(--ifm-color-emphasis-400);
+  border-radius: 3px;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+  background: var(--ifm-color-emphasis-600);
+}
+
+/* Empty State */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1rem;
+  min-height: 300px;
+}
+
+.emptyIcon {
+  color: var(--ifm-color-emphasis-400);
+  margin-bottom: 1rem;
+}
+
+.emptyTitle {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  color: var(--ifm-font-color-base);
+}
+
+.emptyDescription {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--ifm-color-emphasis-700);
+  line-height: 1.6;
+  max-width: 300px;
+}
+
+/* Message Group */
+.messageGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* User Message */
+.userMessage {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.userMessage .messageBubble {
+  background: var(--ifm-color-primary);
+  color: white;
+  max-width: 85%;
+}
+
+/* Bot Message */
+.botMessage {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.botMessage .messageBubble {
+  background: var(--ifm-color-emphasis-100);
+  color: var(--ifm-font-color-base);
+  max-width: 90%;
+}
+
+.botMessage .messageBubble.error {
+  background: var(--ifm-color-danger-lightest);
+  border: 1px solid var(--ifm-color-danger-light);
+}
+
+/* Message Bubble */
+.messageBubble {
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.messageText {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+/* Message Metadata */
+.messageMetadata {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.9;
+}
+
+.modeLabel {
+  padding: 0.125rem 0.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.timestamp {
+  opacity: 0.8;
+}
+
+/* Citations */
+.citations {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.citationsLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-700);
+  margin-bottom: 0.5rem;
+}
+
+.citationsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+/* Loading Dots */
+.loadingDots {
+  display: flex;
+  gap: 0.375rem;
+  padding: 0.25rem 0;
+}
+
+.loadingDots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ifm-color-emphasis-600);
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.loadingDots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.loadingDots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

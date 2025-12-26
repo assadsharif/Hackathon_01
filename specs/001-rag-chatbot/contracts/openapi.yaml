@@ -1,0 +1,412 @@
+openapi: 3.1.0
+info:
+  title: Physical AI Book RAG Chatbot API
+  version: 1.0.0
+  description: |
+    REST API for the RAG chatbot integrated into the Physical AI & Humanoid Robotics Docusaurus book.
+    Provides endpoints for querying book content with full-book or selected-text retrieval modes.
+  contact:
+    name: Physical AI Book Team
+  license:
+    name: MIT
+
+servers:
+  - url: https://api.physical-ai-book.example.com/v1
+    description: Production API
+  - url: http://localhost:8000/v1
+    description: Local development
+
+tags:
+  - name: Query
+    description: Chatbot query endpoints
+  - name: Health
+    description: Service health and status
+
+paths:
+  /query:
+    post:
+      summary: Submit chatbot query
+      description: |
+        Submit a natural language question to the RAG chatbot. Supports two modes:
+        - **full-book**: Search entire book content
+        - **selected-text**: Answer based only on user-highlighted text
+
+        Returns synthesized answer with citations to book sources.
+      operationId: submitQuery
+      tags:
+        - Query
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryRequest'
+            examples:
+              full-book-query:
+                summary: Full-book mode query
+                value:
+                  session_id: "550e8400-e29b-41d4-a716-446655440000"
+                  query: "What is sensor fusion in robotics?"
+                  mode: "full-book"
+                  current_page_url: "/docs/module-4/perception"
+              selected-text-query:
+                summary: Selected-text mode query
+                value:
+                  session_id: "550e8400-e29b-41d4-a716-446655440000"
+                  query: "Explain this concept in simpler terms"
+                  mode: "selected-text"
+                  selected_text: "Inverse kinematics calculates joint angles from desired end-effector position using iterative numerical methods."
+                  current_page_url: "/docs/module-5/kinematics"
+
+      responses:
+        '200':
+          description: Successful query response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryResponse'
+              examples:
+                successful-response:
+                  summary: Successful answer with citations
+                  value:
+                    answer: "Sensor fusion is the process of combining data from multiple sensors to create a more accurate and complete understanding of the environment. In robotics, this typically involves integrating inputs from cameras, LIDAR, IMUs, and other sensors."
+                    citations:
+                      - text: "Module 4: Perception Systems"
+                        url: "/docs/module-4/sensor-fusion#overview"
+                        chunk_id: "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"
+                      - text: "Module 4: Multi-Modal Integration"
+                        url: "/docs/module-4/integration#sensor-types"
+                        chunk_id: "f6e5d4c3-b2a1-4d5e-9c8b-7a6f5e4d3c2b"
+                    mode: "full-book"
+                    latency_ms: 2350
+                no-results-response:
+                  summary: No relevant information found
+                  value:
+                    answer: "I don't have information on that topic in the Physical AI book. Could you try rephrasing your question or ask about topics covered in the book modules?"
+                    citations: []
+                    mode: "full-book"
+                    latency_ms: 1200
+
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                query-too-long:
+                  summary: Query exceeds token limit
+                  value:
+                    error_code: "INVALID_INPUT"
+                    error_message: "Please shorten your question to under 1000 words."
+                    details: "Query contains 1523 tokens, maximum is 1000."
+                missing-selection:
+                  summary: Selected-text mode without selection
+                  value:
+                    error_code: "INVALID_INPUT"
+                    error_message: "Selected text is required when mode is 'selected-text'."
+                    details: "Field 'selected_text' is null or empty."
+
+        '429':
+          description: Rate limit exceeded
+          headers:
+            Retry-After:
+              description: Seconds until rate limit resets
+              schema:
+                type: integer
+                example: 45
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                rate-limited:
+                  summary: Too many queries
+                  value:
+                    error_code: "RATE_LIMIT"
+                    error_message: "Please wait a moment before asking another question."
+                    details: "Rate limit: 10 queries per minute. Retry after 45 seconds."
+
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                service-down:
+                  summary: Backend service failure
+                  value:
+                    error_code: "SERVICE_UNAVAILABLE"
+                    error_message: "The chatbot is temporarily unavailable. Please try again in a few minutes."
+                    details: "Vector database connection failed."
+
+        '504':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                timeout:
+                  summary: Query took too long
+                  value:
+                    error_code: "TIMEOUT"
+                    error_message: "Request took too long. Please try a simpler question or try again."
+                    details: "Query exceeded 3-second timeout threshold."
+
+  /health:
+    get:
+      summary: Health check
+      description: |
+        Returns service health status and connectivity to dependent services (Qdrant, Postgres, OpenAI API).
+        Use for monitoring and readiness probes.
+      operationId: getHealth
+      tags:
+        - Health
+
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              examples:
+                all-healthy:
+                  summary: All services operational
+                  value:
+                    status: "healthy"
+                    version: "1.0.0"
+                    services:
+                      qdrant:
+                        status: "healthy"
+                        latency_ms: 45
+                      postgres:
+                        status: "healthy"
+                        latency_ms: 12
+                      openai:
+                        status: "healthy"
+                        latency_ms: 230
+                    timestamp: "2025-12-25T10:30:00Z"
+
+        '503':
+          description: Service is unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              examples:
+                qdrant-down:
+                  summary: Qdrant unavailable
+                  value:
+                    status: "unhealthy"
+                    version: "1.0.0"
+                    services:
+                      qdrant:
+                        status: "unhealthy"
+                        error: "Connection timeout"
+                      postgres:
+                        status: "healthy"
+                        latency_ms: 15
+                      openai:
+                        status: "healthy"
+                        latency_ms: 200
+                    timestamp: "2025-12-25T10:30:00Z"
+
+components:
+  schemas:
+    QueryRequest:
+      type: object
+      required:
+        - session_id
+        - query
+        - mode
+        - current_page_url
+      properties:
+        session_id:
+          type: string
+          format: uuid
+          description: Frontend-generated session UUID (persistent in browser LocalStorage)
+          example: "550e8400-e29b-41d4-a716-446655440000"
+
+        query:
+          type: string
+          minLength: 1
+          maxLength: 5000
+          description: User's natural language question
+          example: "What is the difference between reactive and deliberative control?"
+
+        mode:
+          type: string
+          enum: [full-book, selected-text]
+          description: |
+            Retrieval mode:
+            - **full-book**: Search entire book content for relevant sections
+            - **selected-text**: Answer based only on user-highlighted text
+          example: "full-book"
+
+        selected_text:
+          type: string
+          maxLength: 10000
+          description: User-highlighted text from documentation (required if mode=selected-text)
+          example: "Inverse kinematics calculates joint angles from desired end-effector position."
+
+        current_page_url:
+          type: string
+          format: uri-reference
+          description: Current documentation page URL (for context tracking)
+          example: "/docs/module-5/kinematics"
+
+    QueryResponse:
+      type: object
+      required:
+        - answer
+        - citations
+        - mode
+        - latency_ms
+      properties:
+        answer:
+          type: string
+          description: Synthesized natural language answer (empty if error occurred)
+          example: "Sensor fusion is the process of combining data from multiple sensors..."
+
+        citations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Citation'
+          description: List of source citations (empty if no relevant sources found)
+          minItems: 0
+          maxItems: 10
+
+        mode:
+          type: string
+          enum: [full-book, selected-text]
+          description: Echo of query mode from request
+          example: "full-book"
+
+        latency_ms:
+          type: integer
+          minimum: 0
+          description: Total response time in milliseconds
+          example: 2350
+
+        error_code:
+          type: string
+          enum: [RATE_LIMIT, TIMEOUT, SERVICE_UNAVAILABLE, INVALID_INPUT, NO_RESULTS, OUT_OF_SCOPE]
+          description: Error code if query failed (omitted if successful)
+          example: null
+
+        error_message:
+          type: string
+          description: User-friendly error message (omitted if successful)
+          example: null
+
+    Citation:
+      type: object
+      required:
+        - text
+        - url
+      properties:
+        text:
+          type: string
+          description: Display text for citation (e.g., "Module 5: Control Systems")
+          example: "Module 4: Perception Systems"
+
+        url:
+          type: string
+          format: uri-reference
+          description: Docusaurus link to source section (with anchor if available)
+          example: "/docs/module-4/sensor-fusion#overview"
+
+        chunk_id:
+          type: string
+          format: uuid
+          description: Source chunk ID (for debugging/analytics, optional in response)
+          example: "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"
+
+    ErrorResponse:
+      type: object
+      required:
+        - error_code
+        - error_message
+      properties:
+        error_code:
+          type: string
+          enum: [RATE_LIMIT, TIMEOUT, SERVICE_UNAVAILABLE, INVALID_INPUT, NO_RESULTS, OUT_OF_SCOPE]
+          description: Machine-readable error code
+          example: "RATE_LIMIT"
+
+        error_message:
+          type: string
+          description: User-friendly error message
+          example: "Please wait a moment before asking another question."
+
+        details:
+          type: string
+          description: Additional technical details (for debugging)
+          example: "Rate limit: 10 queries per minute. Retry after 45 seconds."
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - version
+        - services
+        - timestamp
+      properties:
+        status:
+          type: string
+          enum: [healthy, unhealthy]
+          description: Overall service health status
+          example: "healthy"
+
+        version:
+          type: string
+          description: API version
+          example: "1.0.0"
+
+        services:
+          type: object
+          description: Health status of dependent services
+          properties:
+            qdrant:
+              $ref: '#/components/schemas/ServiceHealth'
+            postgres:
+              $ref: '#/components/schemas/ServiceHealth'
+            openai:
+              $ref: '#/components/schemas/ServiceHealth'
+
+        timestamp:
+          type: string
+          format: date-time
+          description: Health check timestamp (ISO 8601)
+          example: "2025-12-25T10:30:00Z"
+
+    ServiceHealth:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: [healthy, unhealthy]
+          description: Service connectivity status
+          example: "healthy"
+
+        latency_ms:
+          type: integer
+          minimum: 0
+          description: Response latency in milliseconds (if healthy)
+          example: 45
+
+        error:
+          type: string
+          description: Error message (if unhealthy)
+          example: "Connection timeout"
+
+  securitySchemes: {}
+  # No authentication required for Phase 2 (anonymous usage)
+
+security: []
+# No security requirements for Phase 2
