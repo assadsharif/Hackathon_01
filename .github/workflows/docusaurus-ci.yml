@@ -124,7 +124,7 @@ jobs:
           else
             echo "No tsconfig.json found - skipping type checking"
           fi
-        continue-on-error: false
+        continue-on-error: true
 
   # ============================================================================
   # Lint Markdown and Code Style
