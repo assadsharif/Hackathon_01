@@ -1,0 +1,33 @@
+{
+  "name": "better-auth",
+  "description": "Authentication and authorization design intelligence using Better-Auth",
+  "source": "https://www.better-auth.com/",
+  "type": "design-intelligence",
+  "capabilities": [
+    "Signup flow validation",
+    "Signin and session architecture",
+    "OAuth and passwordless design guidance",
+    "Role-based access control patterns",
+    "User profiling for personalization",
+    "Security best practices",
+    "Privacy-first authentication flows"
+  ],
+  "supported_patterns": [
+    "Progressive Signup",
+    "Passwordless Authentication",
+    "Email + OAuth Hybrid",
+    "Session-based Auth",
+    "JWT-based Auth",
+    "Privacy-first Identity Management"
+  ],
+  "integration_scope": [
+    "Documentation platforms",
+    "Educational platforms",
+    "SaaS applications"
+  ],
+  "used_by_skills": [
+    "signup-personalization"
+  ],
+  "used_by_agents": [],
+  "notes": "This MCP server provides design-time authentication intelligence only. No runtime auth code is included."
+}
