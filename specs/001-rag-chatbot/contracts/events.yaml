@@ -1,0 +1,396 @@
+# Frontend-Backend Event Contracts: RAG Chatbot
+
+# This file defines the event flow and data contracts between the frontend (Docusaurus React components)
+# and the backend (FastAPI service). Unlike the REST API (openapi.yaml), this describes the internal
+# event lifecycle within the frontend application.
+
+version: 1.0.0
+description: |
+  Event contracts for RAG chatbot frontend-backend integration.
+  Describes user interactions, state changes, and API call flows.
+
+# ============================================================================
+# Frontend Event Lifecycle
+# ============================================================================
+
+frontend_events:
+  # User opens chatbot panel
+  chatbot_panel_opened:
+    description: User clicks chatbot icon to open the chat interface
+    trigger: User action (click chatbot icon button)
+    data:
+      current_page_url: string  # Current documentation page
+      session_id: string | null  # Existing session ID from LocalStorage (null if first time)
+    actions:
+      - Load session history from LocalStorage (if session_id exists)
+      - Render conversation history in MessageList component
+      - Set initial UI state (mode=full-book, selection=null)
+
+  # User submits query
+  query_submitted:
+    description: User types question and presses Enter or clicks Send button
+    trigger: User action (form submission)
+    data:
+      query: string               # User's question text
+      mode: "full-book" | "selected-text"
+      selected_text: string | null
+      current_page_url: string
+      session_id: string          # Guaranteed to exist (created on first panel open)
+    validation:
+      - query.length >= 1 && query.length <= 5000
+      - if mode === "selected-text", selected_text must not be null
+      - current_page_url matches /^\/docs\/.*$/
+    actions:
+      - Display loading indicator ("Searching the book...")
+      - Disable input field and send button
+      - Append user query to UI (optimistic update)
+      - Call API: POST /v1/query (see openapi.yaml)
+
+  # Query response received
+  query_response_received:
+    description: Backend API returns response (success or error)
+    trigger: API call completion
+    data:
+      answer: string
+      citations: Citation[]
+      mode: "full-book" | "selected-text"
+      latency_ms: number
+      error_code: string | null
+      error_message: string | null
+    actions:
+      - Hide loading indicator
+      - Enable input field and send button
+      - If error_code is null:
+        - Render answer text (markdown formatting)
+        - Render citation links (clickable)
+        - Append to conversation history (LocalStorage)
+      - If error_code exists:
+        - Display error message in UI
+        - Show retry button (if applicable)
+        - Log error to console for debugging
+
+  # User selects text in documentation
+  text_selection_changed:
+    description: User highlights text on the documentation page
+    trigger: Browser selection change event
+    data:
+      selected_text: string       # Highlighted text content
+      selection_start: number     # Character offset start
+      selection_end: number       # Character offset end
+      current_page_url: string    # Page where text was selected
+    validation:
+      - selected_text.length >= 50  # Minimum selection length for meaningful query
+      - selection_end > selection_start
+    actions:
+      - Store selection in component state
+      - Show "Ask about this selection" hint in chatbot panel
+      - Switch mode to "selected-text" (if user opens chatbot)
+
+  # User navigates to different page
+  page_navigation:
+    description: User clicks a link to navigate to a different documentation page
+    trigger: Docusaurus page navigation
+    data:
+      previous_page_url: string
+      current_page_url: string
+      session_id: string
+    actions:
+      - Clear selected_text from state (selection no longer valid)
+      - Reset mode to "full-book"
+      - Preserve conversation history (session persists across pages)
+      - Update current_page_url in session context
+
+  # User toggles theme (light/dark)
+  theme_toggled:
+    description: User switches between light and dark themes
+    trigger: Docusaurus theme toggle
+    data:
+      previous_theme: "light" | "dark"
+      current_theme: "light" | "dark"
+    actions:
+      - Update chatbot panel CSS classes to match theme
+      - Animate theme transition (if enabled)
+
+  # User clears conversation history
+  conversation_cleared:
+    description: User clicks "Clear conversation" button
+    trigger: User action (button click)
+    data:
+      session_id: string
+    actions:
+      - Remove all queries from LocalStorage
+      - Clear MessageList UI
+      - Optionally generate new session_id (or keep existing)
+
+  # Session expired
+  session_expired:
+    description: Conversation history older than 7 days is pruned
+    trigger: Automatic on chatbot panel open
+    data:
+      session_id: string
+      expired_queries: number  # Count of queries removed
+    actions:
+      - Remove queries where timestamp < (now - 7 days)
+      - Update LocalStorage with pruned history
+      - Display notice: "Conversation history older than 7 days has been cleared."
+
+# ============================================================================
+# Backend Event Lifecycle (Internal)
+# ============================================================================
+
+backend_events:
+  # Query received by API
+  query_received:
+    description: API endpoint receives POST /v1/query request
+    trigger: HTTP request
+    data:
+      session_id: string
+      query: string
+      mode: "full-book" | "selected-text"
+      selected_text: string | null
+      current_page_url: string
+    validation:
+      - All required fields present (see openapi.yaml schema)
+      - Query within token limit (1000 tokens)
+      - Mode is valid enum value
+    actions:
+      - Check rate limit (session_id → query count in last 60 seconds)
+      - If rate limit OK, proceed to orchestrator pipeline
+      - If rate limit exceeded, return 429 error
+
+  # Context selection complete
+  context_selected:
+    description: Context Selection Agent determined retrieval scope
+    trigger: Orchestrator Step 1 completion
+    data:
+      scope: "full-book" | "selected-text"
+      context_metadata:
+        page_url: string
+        selection_timestamp: string | null
+        selection_char_offsets: [number, number] | null
+    actions:
+      - Pass scope to Retrieval Agent
+      - Log context decision for analytics
+
+  # Retrieval complete
+  retrieval_complete:
+    description: Retrieval Agent fetched relevant book chunks
+    trigger: Orchestrator Step 2 completion
+    data:
+      chunks_retrieved: BookContentChunk[]
+      retrieval_latency_ms: number
+      retrieval_mode: "vector-search" | "selected-text-passthrough"
+    validation:
+      - chunks_retrieved.length <= 10 (sanity check)
+      - Each chunk has required fields (chunk_id, text_content, metadata)
+    actions:
+      - Pass chunks to Answer Synthesis Agent
+      - Log retrieval metrics for analytics
+
+  # Answer synthesis complete
+  synthesis_complete:
+    description: Answer Synthesis Agent generated response from LLM
+    trigger: Orchestrator Step 3 completion
+    data:
+      answer_text: string
+      chunk_ids_used: string[]   # UUIDs of chunks referenced in answer
+      synthesis_latency_ms: number
+      llm_model: string           # e.g., "gpt-3.5-turbo"
+    validation:
+      - answer_text.length <= 2000 characters
+      - chunk_ids_used is subset of chunks_retrieved
+    actions:
+      - Pass to Citation & Guardrails Agent
+      - Log synthesis metrics
+
+  # Guardrails validation complete
+  guardrails_complete:
+    description: Citation & Guardrails Agent validated answer and generated citations
+    trigger: Orchestrator Step 4 completion
+    data:
+      final_answer: string        # May be modified by guardrails (boundary messages injected)
+      citations: Citation[]
+      validation_flags:
+        out_of_scope_detected: boolean
+        code_generation_attempt: boolean
+        hallucination_risk: "low" | "medium" | "high"
+    actions:
+      - If validation_flags indicate violations, override answer with boundary message
+      - Construct final QueryResponse JSON
+      - Store query_analytics record in Postgres
+
+  # Response sent to frontend
+  response_sent:
+    description: API returns QueryResponse to frontend
+    trigger: HTTP response
+    data:
+      answer: string
+      citations: Citation[]
+      mode: "full-book" | "selected-text"
+      latency_ms: number
+      status_code: number  # 200, 400, 429, 503, etc.
+    actions:
+      - Close HTTP request
+      - Log total request latency
+      - Increment query count metrics
+
+# ============================================================================
+# Error Event Contracts
+# ============================================================================
+
+error_events:
+  # Rate limit exceeded
+  rate_limit_error:
+    trigger: >10 queries/min from session_id
+    response:
+      status_code: 429
+      error_code: "RATE_LIMIT"
+      error_message: "Please wait a moment before asking another question."
+      retry_after: 45  # seconds
+    frontend_action:
+      - Display error message
+      - Disable send button for retry_after seconds
+      - Show countdown timer
+
+  # Query timeout
+  timeout_error:
+    trigger: Pipeline execution exceeds 3 seconds
+    response:
+      status_code: 504
+      error_code: "TIMEOUT"
+      error_message: "Request took too long. Please try a simpler question or try again."
+    frontend_action:
+      - Display error message
+      - Show retry button
+      - Log timeout for debugging
+
+  # Service unavailable (Qdrant/OpenAI/Postgres down)
+  service_unavailable_error:
+    trigger: Dependent service connection failure
+    response:
+      status_code: 503
+      error_code: "SERVICE_UNAVAILABLE"
+      error_message: "The chatbot is temporarily unavailable. Please try again in a few minutes."
+    frontend_action:
+      - Display error message with service status link
+      - Gracefully degrade (keep book accessible)
+      - Hide chatbot panel or show degraded state
+
+  # Invalid input (query too long, missing required fields)
+  invalid_input_error:
+    trigger: Request validation failure
+    response:
+      status_code: 400
+      error_code: "INVALID_INPUT"
+      error_message: "Please shorten your question to under 1000 words."
+      details: "Query contains 1523 tokens, maximum is 1000."
+    frontend_action:
+      - Display error message
+      - Highlight problematic field (if applicable)
+      - Show character/word count hint
+
+  # No results found
+  no_results_error:
+    trigger: Retrieval Agent returns empty list (no relevant chunks)
+    response:
+      status_code: 200  # Not a failure, just no matches
+      error_code: "NO_RESULTS"
+      error_message: "I don't have information on that topic in the book. Could you try rephrasing?"
+      answer: ""
+      citations: []
+    frontend_action:
+      - Display "no results" message
+      - Suggest rephrasing or searching full book (if in selected-text mode)
+
+  # Out-of-scope query
+  out_of_scope_error:
+    trigger: Guardrails Agent detects query outside book content
+    response:
+      status_code: 200
+      error_code: "OUT_OF_SCOPE"
+      error_message: "I can explain concepts from the book but cannot write code or provide information outside this material."
+      answer: "[Boundary message]"
+      citations: []
+    frontend_action:
+      - Display boundary message
+      - Show hint about chatbot capabilities
+
+# ============================================================================
+# State Transitions
+# ============================================================================
+
+state_machine:
+  chatbot_panel:
+    states:
+      - name: closed
+        description: Chatbot panel not visible
+        transitions:
+          - event: chatbot_panel_opened
+            next_state: idle
+
+      - name: idle
+        description: Panel open, waiting for user input
+        transitions:
+          - event: query_submitted
+            next_state: loading
+          - event: text_selection_changed
+            next_state: idle_with_selection
+
+      - name: idle_with_selection
+        description: Panel open, text selected, "Ask about this selection" hint shown
+        transitions:
+          - event: query_submitted
+            next_state: loading
+          - event: page_navigation
+            next_state: idle  # Selection cleared on navigation
+
+      - name: loading
+        description: Query submitted, waiting for backend response
+        transitions:
+          - event: query_response_received (success)
+            next_state: idle
+          - event: query_response_received (error)
+            next_state: error
+
+      - name: error
+        description: Error occurred, displaying error message
+        transitions:
+          - event: query_submitted (retry)
+            next_state: loading
+          - event: conversation_cleared
+            next_state: idle
+
+# ============================================================================
+# Data Type Definitions (TypeScript-like)
+# ============================================================================
+
+types:
+  Citation:
+    text: string
+    url: string
+    chunk_id: string
+
+  BookContentChunk:
+    chunk_id: string
+    module_number: number
+    module_name: string
+    chapter_title: string
+    section_id: string
+    paragraph_index: number
+    text_content: string
+    token_count: number
+    relevance_score: number  # Cosine similarity score (0-1)
+
+  QueryResponsePair:
+    query: string
+    mode: "full-book" | "selected-text"
+    selected_text: string | null
+    answer: string
+    citations: Citation[]
+    timestamp: string  # ISO 8601
+
+  ConversationHistory:
+    session_id: string
+    queries: QueryResponsePair[]
+    created_at: string
+    last_activity: string

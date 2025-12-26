@@ -1,0 +1,119 @@
+.container {
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+  padding: 1rem;
+  background: var(--ifm-background-surface-color);
+}
+
+/* Selected Text Indicator */
+.selectedTextIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  background: var(--ifm-color-primary-lightest);
+  border: 1px solid var(--ifm-color-primary-light);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: var(--ifm-color-primary-dark);
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+.indicatorText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Input Container */
+.inputContainer {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+
+.textarea {
+  flex: 1;
+  min-height: 40px;
+  max-height: 120px;
+  padding: 0.75rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  font-family: var(--ifm-font-family-base);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  resize: none;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  transition: border-color 0.2s;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--ifm-color-primary);
+}
+
+.textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--ifm-color-emphasis-100);
+}
+
+.textarea::placeholder {
+  color: var(--ifm-color-emphasis-600);
+}
+
+/* Send Button */
+.sendButton {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--ifm-color-primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.sendButton:hover:not(:disabled) {
+  background: var(--ifm-color-primary-dark);
+  transform: scale(1.05);
+}
+
+.sendButton:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.sendButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Spinner Animation */
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Character Count */
+.charCount {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--ifm-color-emphasis-600);
+  text-align: right;
+}

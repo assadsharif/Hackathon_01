@@ -51,3 +51,130 @@
 .markdown p {
   margin-bottom: 1rem;
 }
+
+/* ============================================
+   RAG Chatbot Global Styles
+   ============================================ */
+
+/* Chatbot-specific CSS variables for theming */
+:root {
+  /* Chatbot z-index (above navbar and content, below modals) */
+  --chatbot-z-index: 100;
+
+  /* Chatbot colors - light theme */
+  --chatbot-bg: var(--ifm-background-surface-color);
+  --chatbot-border: var(--ifm-color-emphasis-200);
+  --chatbot-shadow: rgba(0, 0, 0, 0.1);
+  --chatbot-fab-bg: var(--ifm-color-primary);
+  --chatbot-fab-hover: var(--ifm-color-primary-dark);
+  --chatbot-message-user-bg: var(--ifm-color-primary-lightest);
+  --chatbot-message-bot-bg: var(--ifm-color-emphasis-100);
+}
+
+[data-theme='dark'] {
+  /* Chatbot colors - dark theme */
+  --chatbot-bg: var(--ifm-background-surface-color);
+  --chatbot-border: var(--ifm-color-emphasis-300);
+  --chatbot-shadow: rgba(0, 0, 0, 0.3);
+  --chatbot-fab-bg: var(--ifm-color-primary);
+  --chatbot-fab-hover: var(--ifm-color-primary-light);
+  --chatbot-message-user-bg: rgba(37, 194, 160, 0.15);
+  --chatbot-message-bot-bg: var(--ifm-color-emphasis-200);
+}
+
+/* Chatbot panel container - ensure it doesn't interfere with page layout */
+.chatbot-container {
+  position: fixed;
+  z-index: var(--chatbot-z-index);
+  pointer-events: none; /* Allow clicks through container */
+}
+
+.chatbot-container > * {
+  pointer-events: auto; /* Re-enable clicks on chatbot elements */
+}
+
+/* Smooth transitions for chatbot animations */
+.chatbot-panel-enter {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+}
+
+.chatbot-panel-enter-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: opacity 200ms ease-out, transform 200ms ease-out;
+}
+
+.chatbot-panel-exit {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.chatbot-panel-exit-active {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition: opacity 150ms ease-in, transform 150ms ease-in;
+}
+
+/* Focus styles for accessibility */
+.chatbot-fab:focus-visible,
+.chatbot-input:focus-visible,
+.chatbot-button:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+/* Ensure chatbot doesn't block page scrolling when minimized */
+body.chatbot-open {
+  overflow: hidden;
+}
+
+@media (min-width: 997px) {
+  /* On desktop, allow scrolling even when chatbot is open */
+  body.chatbot-open {
+    overflow: auto;
+  }
+}
+
+/* Loading animation for chatbot messages */
+@keyframes chatbot-pulse {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.chatbot-loading-dot {
+  animation: chatbot-pulse 1.4s ease-in-out infinite;
+}
+
+.chatbot-loading-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.chatbot-loading-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Smooth scroll for chatbot message list */
+.chatbot-messages {
+  scroll-behavior: smooth;
+}
+
+/* Citation link hover effects (global enhancement) */
+a[class*='CitationLink'] {
+  transition: all 0.2s ease;
+}
+
+a[class*='CitationLink']:hover {
+  transform: translateX(2px);
+}
+
+/* Ensure proper contrast for error messages in both themes */
+.chatbot-error {
+  color: var(--ifm-color-danger);
+  background-color: var(--ifm-color-danger-contrast-background);
+  border-left-color: var(--ifm-color-danger);
+}
