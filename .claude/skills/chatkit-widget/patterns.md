@@ -190,7 +190,7 @@ Chat widgets can become bloated with features, leading to:
 ### Loading Strategy
 
 ```typescript
-// Design-level pseudocode
+// Design-level pseudocode (abstract operations, not runtime code)
 class ChatKitWidget {
   async loadTier(tier: number) {
     switch(tier) {
@@ -198,17 +198,17 @@ class ChatKitWidget {
         // Already loaded (essential features)
         break;
       case 1:
-        await import('./features/rag-chatbot.js');
-        await import('./features/citations.js');
+        await loadFeatureModule('rag-chatbot');
+        await loadFeatureModule('citations');
         break;
       case 2:
-        await import('./features/auth-flows.js');
-        await import('./features/export.js');
+        await loadFeatureModule('auth-flows');
+        await loadFeatureModule('export');
         break;
       case 3:
-        await import('./features/voice-input.js');
-        await import('./features/image-upload.js');
-        await import('./features/code-execution.js');
+        await loadFeatureModule('voice-input');
+        await loadFeatureModule('image-upload');
+        await loadFeatureModule('code-execution');
         break;
     }
   }
