@@ -35,6 +35,21 @@ const config: Config = {
     locales: ['en'],
   },
 
+  // Custom fields for application configuration
+  customFields: {
+    // RAG Chatbot API URL - set via environment variable or use local default
+    chatbotApiUrl: process.env.CHATBOT_API_URL || 'http://localhost:8000/v1',
+  },
+
+  // Load ChatKit widget script
+  scripts: [
+    {
+      src: 'http://localhost:8000/widget/chatkit-widget.js',
+      async: true,
+      type: 'module',
+    },
+  ],
+
   presets: [
     [
       'classic',
@@ -59,23 +74,6 @@ const config: Config = {
     image: 'img/docusaurus-social-card.jpg',
     colorMode: {
       respectPrefersColorScheme: true,
-    },
-    // Algolia DocSearch configuration
-    // Apply for free DocSearch at: https://docsearch.algolia.com/apply/
-    // After approval, replace the placeholder values below with your actual credentials
-    algolia: {
-      appId: 'YOUR_APP_ID', // Provided by Algolia after approval
-      apiKey: 'YOUR_SEARCH_API_KEY', // Public search-only API key
-      indexName: 'physical-ai-book', // Index name (you choose this when applying)
-
-      // Optional: See doc section below
-      contextualSearch: true,
-
-      // Optional: Specify domains where the search should work
-      // searchParameters: {},
-
-      // Optional: Path for search page that is enabled by default (`false` to disable it)
-      searchPagePath: 'search',
     },
     navbar: {
       title: 'Physical AI Book',

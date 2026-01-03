@@ -1,0 +1,120 @@
+# Docker Compose configuration for local development
+# T056 - Phase 7: Backend, Postgres, Qdrant orchestration
+
+version: '3.8'
+
+services:
+  # ============================================================================
+  # PostgreSQL Database - Stores conversation history and metadata
+  # ============================================================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: rag-chatbot-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-ragchatbot}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dev_password_change_in_production}
+      POSTGRES_DB: ${POSTGRES_DB:-ragchatbot}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ragchatbot}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - rag-network
+
+  # ============================================================================
+  # Qdrant Vector Database - Stores book content embeddings
+  # ============================================================================
+  qdrant:
+    image: qdrant/qdrant:v1.7.4
+    container_name: rag-chatbot-qdrant
+    ports:
+      - "${QDRANT_PORT:-6333}:6333"
+      - "6334:6334"  # gRPC port
+    volumes:
+      - qdrant_data:/qdrant/storage
+    environment:
+      QDRANT__SERVICE__GRPC_PORT: 6334
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - rag-network
+
+  # ============================================================================
+  # RAG Chatbot Backend - FastAPI application
+  # ============================================================================
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rag-chatbot-backend
+    environment:
+      # OpenAI API
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4}
+      OPENAI_EMBEDDING_MODEL: ${OPENAI_EMBEDDING_MODEL:-text-embedding-3-small}
+
+      # Database connections
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER:-ragchatbot}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dev_password_change_in_production}
+      POSTGRES_DB: ${POSTGRES_DB:-ragchatbot}
+
+      # Qdrant connection
+      QDRANT_HOST: qdrant
+      QDRANT_PORT: 6333
+      QDRANT_COLLECTION_NAME: ${QDRANT_COLLECTION_NAME:-physical_ai_book}
+
+      # Application settings
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:8080}
+
+      # Rate limiting
+      RATE_LIMIT_REQUESTS: ${RATE_LIMIT_REQUESTS:-10}
+      RATE_LIMIT_WINDOW_SECONDS: ${RATE_LIMIT_WINDOW_SECONDS:-60}
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      # Mount source code for development (hot-reload)
+      - ./src:/app/src:ro
+      # Mount logs directory
+      - ./logs:/app/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - rag-network
+    restart: unless-stopped
+
+# ============================================================================
+# Volumes - Persistent data storage
+# ============================================================================
+volumes:
+  postgres_data:
+    driver: local
+  qdrant_data:
+    driver: local
+
+# ============================================================================
+# Networks
+# ============================================================================
+networks:
+  rag-network:
+    driver: bridge

@@ -1,0 +1,313 @@
+/* Modal Overlay */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal Content */
+.modalContent {
+  background: var(--ifm-background-surface-color);
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+[data-theme='dark'] .modalContent {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Close Button */
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--ifm-color-emphasis-600);
+  transition: color 0.2s;
+}
+
+.closeButton:hover {
+  color: var(--ifm-color-emphasis-900);
+}
+
+/* Typography */
+.signupForm h2,
+.verificationStep h2 {
+  margin: 0 0 0.5rem 0;
+  color: var(--ifm-font-color-base);
+}
+
+.subtitle {
+  color: var(--ifm-color-emphasis-700);
+  margin: 0 0 1.5rem 0;
+}
+
+/* Form */
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--ifm-font-color-base);
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  font-size: 1rem;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 0 0 3px var(--ifm-color-primary-lighter);
+}
+
+.input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Consent Checkbox */
+.consentGroup {
+  margin-bottom: 1.5rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
+  color: var(--ifm-font-color-base);
+}
+
+.checkboxLabel input[type="checkbox"] {
+  margin-right: 0.75rem;
+  margin-top: 0.25rem;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.checkboxLabel span a {
+  color: var(--ifm-color-primary);
+  text-decoration: underline;
+}
+
+/* Error Message */
+.error {
+  background: var(--ifm-color-danger-contrast-background);
+  color: var(--ifm-color-danger);
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--ifm-color-danger);
+}
+
+/* Submit Button */
+.submitButton {
+  width: 100%;
+  padding: 0.875rem;
+  background: var(--ifm-color-primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: var(--ifm-color-primary-dark);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Footer Info */
+.footer {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.tierInfo {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.9rem;
+  color: var(--ifm-font-color-base);
+}
+
+.tierInfo strong {
+  color: var(--ifm-color-primary);
+}
+
+.privacyNote {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+/* Verification Step */
+.verificationStep {
+  text-align: center;
+}
+
+.successIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--ifm-color-success);
+  color: white;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem auto;
+}
+
+.verificationMessage {
+  color: var(--ifm-color-emphasis-700);
+  margin: 1rem 0 0.5rem 0;
+}
+
+.emailDisplay {
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+  font-size: 1.1rem;
+  margin: 0 0 1.5rem 0;
+}
+
+.verificationInstructions {
+  background: var(--ifm-color-emphasis-100);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  text-align: left;
+}
+
+.verificationInstructions h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  color: var(--ifm-font-color-base);
+}
+
+.verificationInstructions ol {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: var(--ifm-font-color-base);
+}
+
+.verificationInstructions li {
+  margin-bottom: 0.5rem;
+}
+
+/* Resend Section */
+.resendSection {
+  margin: 1.5rem 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.resendSection p {
+  color: var(--ifm-color-emphasis-700);
+  margin-bottom: 0.75rem;
+}
+
+.resendButton {
+  background: none;
+  border: 1px solid var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.resendButton:hover:not(:disabled) {
+  background: var(--ifm-color-primary);
+  color: white;
+}
+
+.resendButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.doneButton {
+  margin-top: 1rem;
+  padding: 0.75rem 2rem;
+  background: var(--ifm-color-emphasis-200);
+  color: var(--ifm-font-color-base);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.doneButton:hover {
+  background: var(--ifm-color-emphasis-300);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modalContent {
+    padding: 1.5rem;
+    width: 95%;
+  }
+
+  .closeButton {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+}
