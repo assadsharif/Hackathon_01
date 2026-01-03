@@ -1,0 +1,99 @@
+{
+  // ================================
+  // Claude Code – Project Settings
+  // ChatKit Widget + Spec‑Driven Book
+  // ================================
+
+  // ---- Claude Code Behavior ----
+  "claude.enable": true,
+  "claude.mode": "spec-driven",
+  "claude.strictMode": true,
+  "claude.allowHallucinations": false,
+
+  // Claude should never introduce frameworks unless explicitly specified
+  "claude.frameworkPolicy": {
+    "react": false,
+    "tailwind": false,
+    "vite": false,
+    "nextjs": false,
+    "anyFramework": "explicit-only"
+  },
+
+  // ---- Project Architecture Rules ----
+  "claude.architecture": {
+    "frontend": "physical-ai-book",
+    "backend": "fastapi-service-oriented",
+    "widget": "custom-element",
+    "database": "external-managed",
+    "book": "docusaurus-static"
+  },
+
+  // ---- Spec‑Kit Plus Discipline ----
+  "claude.specKit": {
+    "enabled": true,
+    "requirePhase": true,
+    "requireFreezeBeforeNextPhase": true,
+    "allowVibeCoding": false,
+    "requireExplicitAssumptions": true
+  },
+
+  // ---- Coding Standards ----
+  "claude.codeQuality": {
+    "noMagicNumbers": true,
+    "noHardcodedSecrets": true,
+    "preferPureFunctions": true,
+    "preferSmallFiles": true,
+    "maxFileLength": 450,
+    "requireCommentsForSecurity": true
+  },
+
+  // ---- Security Rules (Phase 12+) ----
+  "claude.security": {
+    "httpsRequired": true,
+    "noTokenLogging": true,
+    "noSecretsInRepo": true,
+    "crashEarlyOnMisconfig": true,
+    "allowInsecureOnlyOnLocalhost": true
+  },
+
+  // ---- Observability & Ops (Phase 13) ----
+  "claude.observability": {
+    "requireRequestId": true,
+    "structuredLogging": true,
+    "errorBoundaries": true,
+    "healthEndpoint": true,
+    "metricsEndpoint": true
+  },
+
+  // ---- Documentation Discipline ----
+  "claude.documentation": {
+    "requirePhaseDocs": true,
+    "requireSecurityAudit": true,
+    "requireDeploymentGuide": true,
+    "requireRunbooks": true,
+    "format": "markdown"
+  },
+
+  // ---- Allowed External Services ----
+  "claude.externalServices": {
+    "database": ["Neon", "PostgreSQL"],
+    "vectorDB": ["Qdrant"],
+    "hosting": ["GitHub Pages"],
+    "email": ["SMTP", "Mock"]
+  },
+
+  // ---- Explicit Non‑Goals ----
+  "claude.nonGoals": {
+    "liveBackendDeployment": "optional",
+    "monorepoRefactor": false,
+    "uiRedesign": false
+  },
+
+  // ---- Output Preferences ----
+  "claude.output": {
+    "preferExplicitSteps": true,
+    "preferChecklists": true,
+    "preferDiagrams": true,
+    "verbosity": "high"
+  }
+}

@@ -41,6 +41,15 @@ const config: Config = {
     chatbotApiUrl: process.env.CHATBOT_API_URL || 'http://localhost:8000/v1',
   },
 
+  // Load ChatKit widget script
+  scripts: [
+    {
+      src: 'http://localhost:8000/widget/chatkit-widget.js',
+      async: true,
+      type: 'module',
+    },
+  ],
+
   presets: [
     [
       'classic',

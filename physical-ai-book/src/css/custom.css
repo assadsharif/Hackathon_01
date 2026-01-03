@@ -178,3 +178,54 @@ a[class*='CitationLink']:hover {
   background-color: var(--ifm-color-danger-contrast-background);
   border-left-color: var(--ifm-color-danger);
 }
+
+/* ============================================
+   ChatKit Widget (Web Component) Styles
+   ============================================ */
+
+/* Position widget at bottom-right corner */
+chatkit-widget {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  width: 350px;
+  height: 500px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+
+  /* CSS variables for theming (passed through to Shadow DOM) */
+  --chatkit-primary-color: var(--ifm-color-primary);
+  --chatkit-bg-color: var(--ifm-background-surface-color);
+  --chatkit-text-color: var(--ifm-font-color-base);
+  --chatkit-border-radius: 12px;
+}
+
+/* Dark theme adjustments */
+[data-theme='dark'] chatkit-widget {
+  --chatkit-primary-color: var(--ifm-color-primary-light);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Mobile responsive - full screen on small devices */
+@media (max-width: 768px) {
+  chatkit-widget {
+    width: 100vw;
+    height: 100vh;
+    bottom: 0;
+    right: 0;
+    border-radius: 0;
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+/* Tablet responsive - adjusted size */
+@media (min-width: 769px) and (max-width: 1024px) {
+  chatkit-widget {
+    width: 320px;
+    height: 450px;
+    bottom: 15px;
+    right: 15px;
+  }
+}
