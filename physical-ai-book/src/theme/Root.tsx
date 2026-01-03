@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
+import AuthButton from '@site/src/components/Auth/AuthButton';
 
 /**
  * Root - Docusaurus theme component that wraps the entire application.
  *
  * This component is mounted globally and persists across all page navigations.
- * We use it to mount the ChatKit widget (Web Component), making the chatbot
- * available on every page of the documentation site.
+ * We use it to mount the ChatKit widget (Web Component) and AuthButton,
+ * making them available on every page of the documentation site.
  *
  * Docusaurus automatically swizzles this component if it exists in src/theme/.
  *
@@ -20,5 +21,20 @@ export default function Root({ children }: { children: React.ReactNode }): JSX.E
     }
   }, []);
 
-  return <>{children}</>;
+  return (
+    <>
+      {/* Auth Button - positioned in top-right navbar area */}
+      <div
+        style={{
+          position: 'fixed',
+          top: '12px',
+          right: '180px',
+          zIndex: 200,
+        }}
+      >
+        <AuthButton />
+      </div>
+      {children}
+    </>
+  );
 }
